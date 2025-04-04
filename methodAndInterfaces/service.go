@@ -5,3 +5,18 @@ type Service struct {
 	durationMonths int
 	monthlyFee     float64
 }
+
+
+// реализации интерфейса Expense
+func (s Service) getName() string {
+	return s.description
+}
+
+
+// реализации интерфейса Expense
+func (s Service) getCost(recur bool) float64 {
+	if recur {
+		return s.monthlyFee * float64(s.durationMonths)
+	}
+	return s.monthlyFee
+}

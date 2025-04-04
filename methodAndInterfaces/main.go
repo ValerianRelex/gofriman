@@ -51,7 +51,7 @@ func getProducts() []Product {
 type Expense interface {
 	getName() string
 	getCost(annual bool) float64
-	}
+}
 
 func main() {
 	products := ProductList{
@@ -87,4 +87,52 @@ func main() {
 	insurance := Service{"Boat Cover", 12, 89.50}
 	fmt.Println("Product:", kayak.name, "Price:", kayak.price)
 	fmt.Println("Service:", insurance.description, "Price:", insurance.monthlyFee*float64(insurance.durationMonths))
+
+	// щаз разрыв башки, определили срез интерфейса.... а, походу мы можем засунуть сюда эти типы данных, т.к. они все реализуют
+	// интерфейс Expense, блядь, пиздец... догадался наконец-то. А еще характерно, что внутри них не написано, что они
+	// реализуют интерфейс Expense
+
+	expenses := []Expense{
+		Product{"Kayak", "Watersports", 275},
+		Service{"Boat Cover", 12, 89.50},
+	}
+
+	for _, expense := range expenses {
+		fmt.Println("Expense:", expense.getName(), "Cost:", expense.getCost(true))
+	}
+
+	fmt.Println("Total: ", calcTotal(expenses))
+
+	product := Product{"Alishev", "Baul", 500.0}
+
+	var expense Expense = &product // а без амперсанда создастся новое значение
+
+	product.price = 100
+
+	fmt.Println("product.price =", product.price, "expense.price =", expense.getCost(true))
+
+	var total float64 = 0
+	for _, item := range expenses {
+		total += item.getCost(false)
+		
+		// УТВЕРЖДЕНИЕ ТИПА с помощью swith case
+		switch value := item.(type) {
+		case Service: fmt.Println("Type Service", value.description)
+		case Product: fmt.Println("Type Product", value.category)
+		default: fmt.Print("Not identity")
+		}
+
+	}
+}
+
+func calcTotal(expenses []Expense) (total float64) {
+	for _, item := range expenses {
+		total += item.getCost(false)
+		if s, ok := item.(Service); ok { // УТВЕРЖДЕНИЕ ТИПА, сужаем тип, и выводим только тип Service
+			fmt.Println(s.description, s.durationMonths, s.monthlyFee)
+		}
+
+		// тоже самое можно сделать с помощью swith case
+	}
+	return
 }
