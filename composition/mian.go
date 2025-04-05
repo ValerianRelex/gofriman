@@ -28,4 +28,17 @@ func main() {
 					"asdf", b.Price(600)) // ебанул им налогом!
 	}
 
+	rentalBoat := store.NewRentalBoat("Titanic", 500500, 450, true, true, "N/A", "N/A")
+	fmt.Println("Name of boat:", rentalBoat.Name, "=", rentalBoat.Boat.Product.Name) // поле продвинуто и не требуется ужасный доступ через все типы
+	fmt.Println("Price of boat:", rentalBoat.Name, "=", rentalBoat.Price(0.5)) // тот же эффект касается методов!
+
+	// Магия интерфейса и композиции!
+	products := map[string]store.ItemForSale {
+        "Kayak": store.NewBoat("Kayak", 279, 1, false),
+        "Ball": store.NewProduct("Soccer Ball", "Soccer",19.50),
+    }
+
+	for key, val := range products {
+		fmt.Println("Key:", key,"Price:", val.Price(0.5))
+	}
 }
