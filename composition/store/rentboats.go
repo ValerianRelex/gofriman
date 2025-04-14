@@ -10,7 +10,6 @@ type RentalBoat struct {
 	*Crew
 }
 
-func NewRentalBoat(name string, price float64, capacity int, motorized, crewed bool, 
-																	captain, firstOfficer string) *RentalBoat {
+func NewRentalBoat(name string, price float64, capacity int, motorized, crewed bool, captain, firstOfficer string) *RentalBoat {
 	return &RentalBoat{NewBoat(name, price, capacity, motorized), crewed, &Crew{ captain, firstOfficer }}
 }
