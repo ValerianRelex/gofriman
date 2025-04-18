@@ -1,17 +1,17 @@
 package main
 
-import "fmt"
+import p "fmt" // заюзали псевдоним!
 
 func main() {
 
 	recoveryFunc := func() {
 		if arg := recover(); arg != nil {
 			if err, ok := arg.(error); ok { // в скобочках - это происходит утверждение типа
-				fmt.Println("Error:", err.Error())
+				p.Println("Error:", err.Error())
 			} else if str, ok := arg.(string); ok { // в скобочках - это происходит утверждение типа
-				fmt.Println("Message:", str)
+				p.Println("Message:", str)
 			} else {
-				fmt.Println("Panic recovered")
+				p.Println("Panic recovered")
 			}
 		}
 	}
@@ -22,9 +22,9 @@ func main() {
 	for _, cat := range categories {
 		total, err := Products.TotalPrice(cat)
 		if err == nil {
-			fmt.Println(cat, "Total:", ToCurrency(total))
+			p.Println(cat, "Total:", ToCurrency(total))
 		} else {
-			fmt.Println("Ошибка, сэр!", err.Error(), "это же отсутствующая категория!") // todo: непонимаю разницу в вызове err и err.Error() - работает одинаково!
+			p.Println("Ошибка, сэр!", err.Error(), "это же отсутствующая категория!") // todo: непонимаю разницу в вызове err и err.Error() - работает одинаково!
 		}
 	}
 
@@ -35,10 +35,10 @@ func main() {
 
 	for date := range catchan {
 		if date.CategoryError == nil {
-			fmt.Println("вывод из канала:", date.Category, "=", date.Total)
+			p.Println("вывод из канала:", date.Category, "=", date.Total)
 		} else {
 			panic(date.CategoryError)
-			fmt.Println("Ошибка:", date.CategoryError)
+			p.Println("Ошибка:", date.CategoryError)
 		}
 	}
 
