@@ -1,0 +1,16 @@
+<h1>Template Value: {{ . }}</h1>
+<h1>Name: {{ .Name }}</h1>
+<h1>Category: {{ .Category }}</h1>
+<h1>Price: {{ printf "$%.2f" .Price }}</h1>
+<h1>Tax: {{ printf "$%.2f" .AddTax }}</h1>
+
+<!-- Цепочка может использоваться только для последнего аргумента, предоставленного функции. -->
+<h1>Discount Price: {{ .ApplyDiscount 10 | printf "$%.2f" }}</h1>
+
+<!-- ниже, тот же результат, т.е. существует и тот и другой способ -->
+<h1>Discount Price: {{ printf "$%.2f" (.ApplyDiscount 10) }}</h1>
+
+<!-- знак мину убирает пробелы до или после двойных фигурных скобок -->
+<h1>
+    Name: {{ .Name }}, Category: {{ .Category }}, Price, {{- printf "$%.2f" .Price -}}
+</h1>
