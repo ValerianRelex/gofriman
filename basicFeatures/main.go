@@ -4,9 +4,33 @@ import (
 	"fmt"
 	"math/rand"
 	"sort"
+	"strings"
 )
 
+type intSlice []int
+
+func (islice intSlice) String() string {
+	stringSlice := make([]string, len(islice))
+
+	for i, v := range islice {
+		stringSlice[i] = fmt.Sprintf("%#v", v)
+		fmt.Printf(" val = %v, type = %T, data = %d \n", v, v, v)
+	}
+
+	return strings.Join(stringSlice, ",")
+}
+
 func main() {
+
+	notSortedSlice := []int{-1, 5, 3, 10, 9, 0, -5}
+
+	// var sortedSlice intSlice
+	sortedSlice := make(intSlice, len(notSortedSlice))
+
+	copy(sortedSlice, notSortedSlice)
+	sort.Ints(sortedSlice)
+
+	fmt.Println("\n\n Отсортированный массив через запятую, композиция в действии? \n", sortedSlice)
 
 	i := 100
 	var j *int = &i
@@ -25,23 +49,16 @@ func main() {
 	pointerNilPointer := &nilPointer
 	fmt.Println("nilPointer = ", nilPointer, "pointerNilPointer = ", pointerNilPointer)
 
-
 	nilPointer = &first
 	fmt.Println("nilPointer = ", *nilPointer, "*pointerNilPointer указывает на nilPointer, а там хранится адрес! поэтому =  ", *pointerNilPointer)
 
-
-
-	array := [3]string {"bob", "anna", "ceren"}
+	array := [3]string{"bob", "anna", "ceren"}
 
 	secondValue := &array[1]
 
 	fmt.Println(*secondValue) // anna
 	sort.Strings(array[:])
 	fmt.Println(*secondValue) // bob
-
-
-
-
 
 	// constExample()
 	// loopPrintRandom()
