@@ -51,7 +51,7 @@ func HTTPSRedirect(writer http.ResponseWriter, request *http.Request) {
 
 func main() {
 	// err := http.ListenAndServe(":5000", http.HandlerFunc(HTTPSRedirect))
-	
+
 	http.Handle("/message", StringHandler{"Hello, World"})
 	http.Handle("/", http.RedirectHandler("/message", http.StatusTemporaryRedirect))
 	http.Handle("/favicon.ico", http.NotFoundHandler())
