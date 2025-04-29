@@ -49,22 +49,30 @@ func HTTPSRedirect(writer http.ResponseWriter, request *http.Request) {
 	http.Redirect(writer, request, target, http.StatusTemporaryRedirect)
 }
 
+// это я написал свой адаптер! 
+type HandlerAdapter func(writer http.ResponseWriter, request *http.Request)
+
+func (adapter HandlerAdapter) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+	adapter(writer, request)
+}
+
+
 func main() {
 	// err := http.ListenAndServe(":5000", http.HandlerFunc(HTTPSRedirect))
 
 	http.Handle("/message", StringHandler{"Hello, World"})
 	http.Handle("/", http.RedirectHandler("/message", http.StatusTemporaryRedirect))
 	http.Handle("/favicon.ico", http.NotFoundHandler())
-	
+
+	// не повторял до конца, но понял, что http.HandlerFunc() это АДАПТЕР, представляет интерфейс http.Handler
+	http.Handle("/templates/", http.StripPrefix("/templates/", HandlerAdapter(HTTPSRedirect)))
+
 	// статический HTTP сервер
 	fsHandler := http.FileServer(http.Dir("./static"))
 	http.Handle("/files/", http.StripPrefix("/files", fsHandler))
-	
+
 	// если здесь обработчик = nil, тогда юзаем http.Handle()
 	err := http.ListenAndServe(":5000", nil)
-
-	// не повторял до конца, но понял, что http.HandlerFunc() это АДАПТЕР, представляет интерфейс http.Handler
- 	http.Handle("/templates/", http.StripPrefix("/templates/", http.HandlerFunc(HTTPSRedirect)))
 
 	go func() {
 		err := http.ListenAndServeTLS(":5500", "certificate.cer", "certificate.key", nil)
@@ -72,7 +80,7 @@ func main() {
 			Printfln("HTTPS Error: %v", err.Error())
 		}
 	}()
-	
+
 	if err != nil {
 		Printfln("Error: %v", err.Error())
 	}
