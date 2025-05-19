@@ -58,7 +58,7 @@ func (ipAddr IPAddr) String() string {
 func main() {
 
 
-	fmt.Stringer
+
 
 
 

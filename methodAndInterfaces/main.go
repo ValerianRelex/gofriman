@@ -125,6 +125,8 @@ func main() {
 	}
 }
 
+
+
 func calcTotal(expenses []Expense) (total float64) {
 	for _, item := range expenses {
 		total += item.getCost(false)
